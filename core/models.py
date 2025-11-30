@@ -64,6 +64,7 @@ class Item(models.Model):
 class StockLevel(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="stock_levels")
     bin = models.ForeignKey(Bin, on_delete=models.CASCADE, related_name="stock_levels")
+    quantity = models.PositiveIntegerField()
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
