@@ -4,7 +4,7 @@ from django.db import models
 
 #Category model
 class Category(models.Model):
-    category_name = models.CharField(max_length=50)
+    category_name = models.CharField(max_length=50, unique=True)
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -14,8 +14,8 @@ class Category(models.Model):
 
 #Supplier model
 class Supplier(models.Model):
-    supplier_name = models.CharField(max_length=100)
-    contact_email = models.EmailField()
+    supplier_name = models.CharField(max_length=100, unique=True)
+    contact_email = models.EmailField(unique=True)
 
     class Meta:
         verbose_name_plural = "Suppliers"
@@ -99,3 +99,4 @@ class MovementLog(models.Model):
 
     def __str__(self):
         return f"Moved {self.quantity} of {self.item.item_name} from {self.from_bin.bin_name} to {self.to_bin.bin_name} on {self.date_moved}"
+
