@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'analytics',
     'assistant',
     'django.contrib.admin',
+    'api.apps.ApiConfig',
+    "rest_framework",
 ]
 
 MIDDLEWARE = [

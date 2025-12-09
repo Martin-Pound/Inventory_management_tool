@@ -35,11 +35,3 @@ def create_item(item_name, description, SKU, category_name, supplier_name):
     item.save()
     return item
 
-
-item = create_item(
-    item_name="Bluetooth Keyboard",
-    description="Slim Bluetooth keyboard with rechargeable battery.",
-    SKU="BTK123",
-    category_name="Electronics",
-    supplier_name="Test Supplier"
-)
