@@ -2,20 +2,18 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import transaction
 from core.models import Item, MovementLog, MovementType, Bin, StockLevel
 
-# Constants for special bins
-EXTERNAL_BIN_NAME = "EXTERNAL"
 
 
 def get_item_by_sku(sku):
-    """Helper function to get an item by SKU or raise a validation error."""
+    '''Helper function to get an item by SKU or raise a validation error.'''
     try:
-        return Item.objects.get(sku=sku)
+        return Item.objects.get(SKU=sku)
     except ObjectDoesNotExist:
         raise ValidationError(f"Item with SKU '{sku}' does not exist.")
 
 
 def get_bin(bin_name):
-    """Helper function to get a bin by name or raise a validation error."""
+    """Helper function to get a bin by name or create a virtual one for EXTERNAL."""
     try:
         return Bin.objects.get(bin_name=bin_name)
     except ObjectDoesNotExist:
@@ -26,17 +24,13 @@ def update_stock_level(item,
         bin,
         quantity_change):
     """Updates the stock level of an item in a specific bin."""
-    # Skip updating external bin's stock level
-    if bin.bin_name == EXTERNAL_BIN_NAME:
-        return None
-
-    stock_level, created = StockLevel.objects.get_or_create(item=item, bin=bin)
+    stock_level, created = StockLevel.objects.get_or_create(item=item, bin=bin, defaults={'quantity': 0})
     stock_level.quantity += quantity_change
 
     # Prevent negative quantities
     if stock_level.quantity < 0:
         raise ValidationError(
-            f"Cannot reduce stock below zero for {item.sku} in bin {bin.bin_name} "
+            f"Cannot reduce stock below zero for {item.SKU} in bin {bin.bin_name} "
             f"(current: {stock_level.quantity - quantity_change}, change: {quantity_change})")
 
     stock_level.full_clean()
