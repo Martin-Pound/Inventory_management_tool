@@ -20,7 +20,11 @@ class MovementLogSerializer(serializers.ModelSerializer):
         queryset=Item.objects.all(),
         slug_field='SKU'
     )
-    bin = serializers.SlugRelatedField(
+    from_bin = serializers.SlugRelatedField(
+        queryset=Bin.objects.all(),
+        slug_field='bin_name'
+    )
+    to_bin = serializers.SlugRelatedField(
         queryset=Bin.objects.all(),
         slug_field='bin_name'
     )
@@ -29,11 +33,6 @@ class MovementLogSerializer(serializers.ModelSerializer):
         slug_field='code'
     )
 
-    warehouse = serializers.SlugRelatedField(
-        queryset=Warehouse.objects.all(),
-        slug_field='warehouse_name'
-    )
-
     class Meta:
         model = MovementLog
-        fields = ['id', 'item', 'bin', 'quantity', 'movement_type', 'timestamp']
+        fields = ['id', 'item', 'from_bin', 'to_bin', 'quantity', 'movement_type', 'date_moved']
