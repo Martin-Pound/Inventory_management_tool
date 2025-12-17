@@ -36,6 +36,10 @@ def update_stock_level(item, bin, quantity_change):
             f"Cannot reduce stock below zero for {item.SKU} in bin {bin.bin_name} "
             f"(current: {stock_level.quantity - quantity_change}, change: {quantity_change})")
 
+    elif stock_level.quantity == 0:
+        stock_level.delete()
+        return None
+
     stock_level.full_clean()
     stock_level.save()
     return stock_level
