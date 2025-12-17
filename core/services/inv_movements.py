@@ -1,16 +1,21 @@
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import transaction
-from core.models import Item, MovementLog, MovementType, Bin, StockLevel
+from core.models import Item, MovementLog, MovementType, Bin, StockLevel, Warehouse
 
 
+def warehouse_check(warehouse_name):
+    #helper function to validate warehouse existence
+    try:
+        return Warehouse.objects.get(warehouse_name=warehouse_name)
+    except ObjectDoesNotExist:
+        raise ValidationError(f"Warehouse '{warehouse_name}' does not exist.")
 
 def get_item_by_sku(sku):
-    '''Helper function to get an item by SKU or raise a validation error.'''
+    # Helper function to get an item by SKU
     try:
         return Item.objects.get(SKU=sku)
     except ObjectDoesNotExist:
         raise ValidationError(f"Item with SKU '{sku}' does not exist.")
-
 
 def get_bin(bin_name):
     """Helper function to get a bin by name or create a virtual one for EXTERNAL."""
@@ -19,11 +24,9 @@ def get_bin(bin_name):
     except ObjectDoesNotExist:
         raise ValidationError(f"Bin '{bin_name}' does not exist.")
 
-
-def update_stock_level(item,
-        bin,
-        quantity_change):
-    """Updates the stock level of an item in a specific bin."""
+@transaction.atomic
+def update_stock_level(item, bin, quantity_change):
+    # Updates the stock level for a given item in a specific bin.
     stock_level, created = StockLevel.objects.get_or_create(item=item, bin=bin, defaults={'quantity': 0})
     stock_level.quantity += quantity_change
 
@@ -37,23 +40,10 @@ def update_stock_level(item,
     stock_level.save()
     return stock_level
 
+@transaction.atomic
+def log_movement(sku, from_bin_name, to_bin_name, quantity, movement_code):
+    # Logs a stock movement from one bin to another with the specified quantity and movement type.
 
-@transaction.atomic #Ensures an atomic database transaction
-def log_movement(sku,
-        from_bin_name,
-        to_bin_name,
-        quantity,
-        movement_code):
-    """
-    Logs the movement of an item from one bin to another using the item's SKU.
-
-    Args:
-        sku: The Stock Keeping Unit of the item
-        from_bin_name: Source bin name
-        to_bin_name: Destination bin name
-        quantity: Quantity being moved
-        movement_code: Type of movement
-    """
     # Validate quantity
     if quantity <= 0:
         raise ValidationError("Movement quantity must be positive")
@@ -87,3 +77,24 @@ def log_movement(sku,
     update_stock_level(item, to_bin, quantity)
 
     return movement_log
+
+@transaction.atomic
+def inbound_stock(item, warehouse, quantity):
+    #Creates inbound stock movement to relevant warehouse's receiving bin
+
+    #validate stock existence
+    item = get_item_by_sku(item)
+    #validate warehouse existence
+    warehouse = warehouse_check(warehouse)
+    #determine receiving bin name
+    receiving_bin_name = f"{warehouse}_INBOUND"
+    # get the bin object
+    bin_obj = get_bin(receiving_bin_name)
+    # updates stock level
+    stock_level = update_stock_level(item, bin_obj, quantity)
+
+    return stock_level
+
+
+
+
