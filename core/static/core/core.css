@@ -1,0 +1,44 @@
+/* Stock Table Styles */
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.stock-table th,
+.stock-table td {
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+}
+
+.stock-table thead {
+  background-color: #f5f7fa;
+}
+
+.stock-table th {
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.stock-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.stock-table tbody tr:hover {
+  background-color: #edf2f7;
+}
+
+.stock-table td {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+/* Make the table responsive */
+@media screen and (max-width: 600px) {
+  .stock-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

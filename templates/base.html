@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Inventory App{% endblock %}</title>
+
+  <!-- Global app CSS -->
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+
+  {% block css_files %}{% endblock %}
+</head>
+
+<body>
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="logo">{% block page_title %}FluxShift{% endblock %}</div>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+    </label>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="{% url "dashboard-page" %}">Manage</a></li>
+        <li><a href="#">Analyse</a></li>
+        <li><a href="#">Users</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main container -->
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      {% block sidebar %}
+      <nav class="side-nav">
+        <ul>
+          <li><a href="{% url "dashboard-page" %}">Dashboard</a></li>
+          <li><a href="{% url "configure-page" %}">Configure</a></li>
+          <li><a href="#">Problem Solve</a></li>
+          <li><a href="#">Lookup</a></li>
+        </ul>
+      </nav>
+      {% endblock %}
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  {% block js_files %}{% endblock %}
+</body>
+</html>

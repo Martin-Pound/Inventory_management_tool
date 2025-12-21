@@ -1,0 +1,241 @@
+/* ------------------------
+   Reset and base styles
+------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #0066cc;
+}
+
+/* ------------------------
+   Top Navigation
+------------------------- */
+.top-nav {
+  background-color: #1f674b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 2rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #ff6f61;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 2rem;
+}
+
+.main-nav a {
+  color: #f6f2f2;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  display: block;
+}
+
+.main-nav a:hover {
+  color: #11cd9e;
+}
+
+/* Nav toggle for mobile */
+.nav-toggle {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none;
+  cursor: pointer;
+}
+
+/* ------------------------
+   Layout Container
+------------------------- */
+.container {
+  display: flex;
+  flex: 1;
+  margin-top: 60px; /* Equal to top-nav height */
+}
+
+/* ------------------------
+   Sidebar
+------------------------- */
+.sidebar {
+  width: 250px;
+  background-color: white;
+  border-right: 1px solid #e0e0e0;
+  height: calc(100vh - 60px);
+  position: fixed;
+  top: 60px;
+}
+
+.side-nav {
+  padding: 1.5rem 0;
+}
+
+.side-nav ul li {
+  padding: 0 1.5rem;
+}
+
+.side-nav a {
+  display: block;
+  padding: 0.75rem 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.side-nav a:hover {
+  color: #0066cc;
+}
+
+/* ------------------------
+   Main Content Area
+------------------------- */
+.content {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 250px; /* Equal to sidebar width */
+}
+
+/* ------------------------
+   Utility helpers
+------------------------- */
+.card-admin {
+  border-left: 4px solid #0066cc;
+  background: white;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ------------------------
+   Responsive Styles
+------------------------- */
+@media screen and (max-width: 800px) {
+  .top-nav {
+    padding: 0 1rem;
+  }
+
+  /* Mobile nav toggle */
+  .nav-toggle-label {
+    display: block;
+    position: relative;
+    height: 24px;
+    width: 30px;
+  }
+
+  .nav-toggle-label span,
+  .nav-toggle-label span::before,
+  .nav-toggle-label span::after {
+    display: block;
+    height: 3px;
+    width: 100%;
+    border-radius: 2px;
+    background: #333;
+    position: absolute;
+  }
+
+  .nav-toggle-label span::before,
+  .nav-toggle-label span::after {
+    content: "";
+  }
+
+  .nav-toggle-label span {
+    top: 10px;
+  }
+
+  .nav-toggle-label span::before {
+    bottom: 8px;
+  }
+
+  .nav-toggle-label span::after {
+    top: 8px;
+  }
+
+  /* Hide top nav items by default */
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #189877;
+    transform: scale(1, 0);
+    transform-origin: top;
+    transition: transform 0.3s ease-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .main-nav a {
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-toggle:checked ~ .main-nav {
+    transform: scale(1, 1);
+  }
+
+  .nav-toggle:checked ~ .main-nav a {
+    opacity: 1;
+    transition: opacity 0.25s ease-out 0.15s;
+  }
+
+  /* Adjust layout for mobile */
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #b1acaf;
+    display: none;
+  }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  /* Show sidebar when checked */
+  .nav-toggle:checked ~ .container .sidebar {
+    display: block;
+  }
+}

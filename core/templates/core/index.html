@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'core/core.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="card-admin">
+  <h2>Welcome to Inventory Management</h2>
+  <p>Use the sidebar to navigate through the application.</p>
+</div>
+
+<div class="card-admin">
+  <h2>Stock by Category</h2>
+  <table class="stock-table">
+    <thead>
+      <tr>
+        {% for c in category_summaries %}
+          <th>{{ c.category_name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for c in category_summaries %}
+          <td>{{ c.total_quantity }}</td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card-admin">
+  <h2>Stock by Warehouse</h2>
+  <table class="stock-table">
+    <thead>
+      <tr>
+        {% for w in warehouse_summaries %}
+          <th>{{ w.warehouse_name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for w in warehouse_summaries %}
+          <td>{{ w.total_quantity }}</td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card-admin">
+  <h2>Stock by Supplier</h2>
+  <table class="stock-table">
+    <thead>
+      <tr>
+        {% for s in supplier_summaries %}
+          <th>{{ s.supplier_name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for s in supplier_summaries %}
+          <td>{{ s.total_quantity }}</td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+
