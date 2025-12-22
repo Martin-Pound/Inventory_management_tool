@@ -128,15 +128,15 @@ a {
 /* ------------------------
    Utility helpers
 ------------------------- */
-.card-admin {
-  border-left: 4px solid #0066cc;
-  background: white;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
+/*.card-admin {*/
+/*  border-left: 4px solid #0066cc;*/
+/*  background: white;*/
+/*  padding: 1.5rem;*/
+/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*  border-radius: 4px;*/
+/*  margin-top: 1rem;*/
+/*  margin-bottom: 1rem;*/
+/*}*/
 
 /* ------------------------
    Responsive Styles
@@ -161,7 +161,7 @@ a {
     height: 3px;
     width: 100%;
     border-radius: 2px;
-    background: #333;
+    background: #ff6f61;
     position: absolute;
   }
 
@@ -206,6 +206,10 @@ a {
     padding: 1rem 1.5rem;
   }
 
+  .nav-toggle:checked ~ .container .sidebar {
+    display: block;
+  }
+
   .nav-toggle:checked ~ .main-nav {
     transform: scale(1, 1);
   }
@@ -217,12 +221,16 @@ a {
 
   /* Adjust layout for mobile */
   .sidebar {
-    position: static;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease-out;
+    overflow: hidden;
+    /*position: static;*/
     width: 100%;
     height: auto;
-    border-right: none;
-    border-bottom: 1px solid #b1acaf;
-    display: none;
+    /*border-right: none;*/
+    /*border-bottom: 1px solid #b1acaf;*/
+    /*display: none;*/
   }
 
   .container {
@@ -238,4 +246,38 @@ a {
   .nav-toggle:checked ~ .container .sidebar {
     display: block;
   }
+  /* Sidebar toggle for mobile */
+  .sidebar-toggle {
+    display: none; /* Hide the checkbox */
+  }
+
+  .sidebar-toggle-label {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1f674b;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 100;
+    cursor: pointer;
+  }
+
+  .sidebar-toggle-label span::before {
+    content: "≡"; /* Hamburger icon or any other icon */
+    font-size: 24px;
+  }
+
+  /* Show sidebar when the sidebar toggle is checked */
+  .sidebar-toggle:checked ~ .container .sidebar {
+    transform: scaleY(1);
+    /*display: block;*/
+  }
+
+
 }

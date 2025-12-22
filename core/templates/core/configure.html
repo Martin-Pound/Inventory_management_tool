@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="{% static 'core/core.css' %}">
 {% endblock %}
 
-
 {% block content %}
 <h1>Configuration</h1>
 
@@ -16,6 +15,86 @@
   <p>Use the below forms to configure warehouse and vendor attributes.</p>
 </div>
 
+<div class="card-admin">
+  <h2>Warehouse Configuration</h2>
+  <form method="post" action="">
+    <input type="hidden" name="form_type" value="warehouse">
+    {% csrf_token %}
+    {{ warehouse_form.as_p }}
+    <button type="submit">Save Warehouse Configuration</button>
+  </form>
+</div>
 
+<div class="card-admin">
+  <h2>Bin Configuration</h2>
+  <form method="post" action="">
+    <input type="hidden" name="form_type" value="bin">
+    {% csrf_token %}
+    {{ bin_form.as_p }}
+    <button type="submit">Save Bin Configuration</button>
+  </form>
+</div>
+
+<div class="card-admin">
+  <h2>Category Configuration</h2>
+  <form method="post" action="">
+    <input type="hidden" name="form_type" value="category">
+    {% csrf_token %}
+
+    {% if category_form.non_field_errors %}
+    <div class="error-message">
+      {% for error in category_form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for field in category_form %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+        <span class="field-error">
+          {% for error in field.errors %}
+            {{ error }}
+          {% endfor %}
+        </span>
+        {% endif %}
+      </p>
+    {% endfor %}
+    <button type="submit">Save Category Configuration</button>
+  </form>
+</div>
+
+<div class="card-admin">
+  <h2>Supplier Configuration</h2>
+  <form method="post" action="">
+    <input type="hidden" name="form_type" value="supplier">
+    {% csrf_token %}
+
+    {% if supplier_form.non_field_errors %}
+    <div class="error-message">
+      {% for error in supplier_form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for field in category_form %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+        <span class="field-error">
+          {% for error in field.errors %}
+            {{ error }}
+          {% endfor %}
+        </span>
+        {% endif %}
+      </p>
+    {% endfor %}
+    <button type="submit">Save Supplier Configuration</button>
+  </form>
+</div>
 
 {% endblock %}

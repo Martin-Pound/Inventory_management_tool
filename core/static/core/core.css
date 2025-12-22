@@ -42,3 +42,84 @@
     overflow-x: auto;
   }
 }
+
+/* ------------------------
+   Utility helpers
+------------------------- */
+.card-admin {
+  border-left: 4px solid #0066cc;
+  background: white;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Card Header Styling */
+.card-admin h2 {
+  color: #333;
+  font-size: 1.25rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.card-admin p {  /* Django's as_p wraps each field in a p tag */
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-admin label {
+  font-weight: 600;
+  color: #4a5568;
+  margin-right: 1rem;
+  width: 30%;  /* Adjust this value as needed */
+}
+
+.card-admin input,
+.card-admin select,
+.card-admin textarea {
+  flex: 1; /* Take up remaining space */
+}
+
+
+/* Button Styling */
+.card-admin button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.card-admin button:hover {
+  background-color: #0052a3;
+}
+
+/* Error Styling */
+.field-error {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.error-message {
+  color: #e53e3e;
+  background-color: #fef2f2;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #e53e3e;
+}
+
+
+

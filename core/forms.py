@@ -1,20 +1,51 @@
 from django import forms
-from .models import Bin, Warehouse, Supplier, Category
+from .models import Bin, Warehouse, Supplier, Category, Item
 
 class BinForm(forms.ModelForm):
-    class meta:
+    class Meta:
         model = Bin
-        fields = ['bin_name', 'warehouse_name',]
+        fields = ['bin_name', 'warehouse',]
         labels = {
             'bin_name': 'Bin Name',
+            'warehouse': 'Warehouse Name',
+        }
+
+class WarehouseForm(forms.ModelForm):
+    class Meta:
+        model = Warehouse
+        fields = ['warehouse_name', 'street_address', 'postcode']
+        labels = {
             'warehouse_name': 'Warehouse Name',
+            'street_address': 'Street Address',
+            'postcode': 'Postcode',
+        }
+
+class CatergoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['category_name']
+        labels = {
+            'category_name': 'Category Name',
         }
         error_messages = {
-            'bin_name': {
-                'required': 'Bin name is required',
-                'max_length': 'Please enter a shorter bin name'
+            'category_name': {
+                'unique': "This category already exists. Please choose a different name.",
             },
-            'warehouse_name': {
-                'required': 'Warehouse name is required',
-            }
+        }
+
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['supplier_name', 'contact_email']
+        labels = {
+            'supplier_name': 'Supplier Name',
+            'contact_email': 'Contact Email',
+        }
+        error_messages = {
+            'supplier_name': {
+                'unique': "This supplier already exists. Please choose a different name.",
+            },
+            'contact_email': {
+                'unique': "This email is already associated with another supplier. Please use a different email.",
+            },
         }
