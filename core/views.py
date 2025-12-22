@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
-from core.forms import WarehouseForm, BinForm, CatergoryForm, SupplierForm
+from core.forms import WarehouseForm, BinForm, CategoryForm, SupplierForm, ItemForm
 from core.models import Item, Category, Warehouse, Supplier, Bin
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
@@ -50,7 +50,7 @@ class ConfigureView(View):
         return BinForm()
 
     def category_form(self):
-        return CatergoryForm
+        return CategoryForm
 
     def supplier_form(self):
         return SupplierForm
@@ -59,13 +59,15 @@ class ConfigureView(View):
         return WarehouseForm()
 
     def item_form(self):
-        pass
+        return ItemForm()
 
     def get(self, request):
         context = {
             "bin_form": self.bin_form(),
             "warehouse_form": self.warehouse_form(),
             "category_form": self.category_form(),
+            "supplier_form": self.supplier_form(),
+            "item_form": self.item_form(),
         }
         return render(request, self.template_name, context)
 
@@ -126,8 +128,21 @@ class ConfigureView(View):
                 }
                 return render(request, self.template_name, context)
 
+        #Handle item form
+        if form_type == 'item':
+            item_form = ItemForm(request.POST)
+            if item_form.is_valid():
+                item = item_form.save()
+                messages.success(request, f"Item '{item.item_name}' saved successfully!")
+                return HttpResponseRedirect(reverse("configure-page"))
+            else:
+                context = {
+                    "item_form": item_form,
+                }
+                return render(request, self.template_name, context)
+
         # If we got here, something went wrong
         messages.error(request, "Form submission error")
-        return redirect('configure')
+        return HttpResponseRedirect(reverse("configure-page"))
 
 

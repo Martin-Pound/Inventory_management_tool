@@ -16,7 +16,7 @@
 </div>
 
 <div class="card-admin">
-  <h2>Warehouse Configuration</h2>
+  <h2>New Warehouse Configuration</h2>
   <form method="post" action="">
     <input type="hidden" name="form_type" value="warehouse">
     {% csrf_token %}
@@ -26,7 +26,7 @@
 </div>
 
 <div class="card-admin">
-  <h2>Bin Configuration</h2>
+  <h2>New Bin Configuration</h2>
   <form method="post" action="">
     <input type="hidden" name="form_type" value="bin">
     {% csrf_token %}
@@ -36,7 +36,7 @@
 </div>
 
 <div class="card-admin">
-  <h2>Category Configuration</h2>
+  <h2>New Category Configuration</h2>
   <form method="post" action="">
     <input type="hidden" name="form_type" value="category">
     {% csrf_token %}
@@ -67,7 +67,7 @@
 </div>
 
 <div class="card-admin">
-  <h2>Supplier Configuration</h2>
+  <h2>New Supplier Configuration</h2>
   <form method="post" action="">
     <input type="hidden" name="form_type" value="supplier">
     {% csrf_token %}
@@ -80,7 +80,7 @@
     </div>
     {% endif %}
 
-    {% for field in category_form %}
+    {% for field in supplier_form %}
       <p>
         {{ field.label_tag }}
         {{ field }}
@@ -97,4 +97,34 @@
   </form>
 </div>
 
+<div class="card-admin">
+  <h2>New Item Configuration</h2>
+  <form method="post" action="">
+    <input type="hidden" name="form_type" value="item">
+    {% csrf_token %}
+
+    {% if item_form.non_field_errors %}
+    <div class="error-message">
+      {% for error in item_form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for field in item_form %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+        <span class="field-error">
+          {% for error in field.errors %}
+            {{ error }}
+          {% endfor %}
+        </span>
+        {% endif %}
+      </p>
+    {% endfor %}
+    <button type="submit">Save item Configuration</button>
+  </form>
+</div>
 {% endblock %}

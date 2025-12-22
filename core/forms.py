@@ -47,5 +47,24 @@ class SupplierForm(forms.ModelForm):
             },
             'contact_email': {
                 'unique': "This email is already associated with another supplier. Please use a different email.",
+                'invalid': "Enter a valid email address.",
+            },
+
+        }
+
+class ItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ['item_name', 'description', 'SKU', 'category', 'supplier']
+        labels = {
+            'item_name': 'Item Name',
+            'description': 'Description',
+            'SKU': 'SKU',
+            'category': 'Category',
+            'supplier': 'Supplier',
+        }
+        error_messages = {
+            'SKU': {
+                'unique': "This SKU already exists. Please choose a different SKU.",
             },
         }
