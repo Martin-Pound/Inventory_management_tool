@@ -20,7 +20,7 @@ class WarehouseForm(forms.ModelForm):
             'postcode': 'Postcode',
         }
 
-class CatergoryForm(forms.ModelForm):
+class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['category_name']

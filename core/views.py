@@ -104,7 +104,7 @@ class ConfigureView(View):
 
         #Handle category form
         if form_type == 'category':
-            category_form = CatergoryForm(request.POST)
+            category_form = CategoryForm(request.POST)
             if category_form.is_valid():
                 category = category_form.save()
                 messages.success(request, f"Category '{category.category_name}' saved successfully!")
