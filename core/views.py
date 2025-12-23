@@ -145,4 +145,14 @@ class ConfigureView(View):
         messages.error(request, "Form submission error")
         return HttpResponseRedirect(reverse("configure-page"))
 
+class ItemsLookupView(View):
+    template_name = "core/item_lookup.html"
+
+    def get(self, request):
+        items = Item.objects.all().order_by("item_name")
+        context = {
+            "items": items
+        }
+        return render(request, self.template_name, context)
+
 

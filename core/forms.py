@@ -10,6 +10,21 @@ class BinForm(forms.ModelForm):
             'warehouse': 'Warehouse Name',
         }
 
+        def clean(self):
+            cleaned_data = super().clena()
+            bin_name = cleaned_data.get('bin_name')
+            warehouse = cleaned_data.get('warehouse')
+
+            if bin_name and warehouse:
+                # Check if this bin name already exists in the warehouse
+                if Bin.objects.filter(bin_name=bin_name, warehouse=warehouse).exists():
+                    raise forms.ValidationError(
+                        f"A bin named '{bin_name}' already exists in {warehouse.warehouse_name}."
+                    )
+
+            return cleaned_data
+
+
 class WarehouseForm(forms.ModelForm):
     class Meta:
         model = Warehouse

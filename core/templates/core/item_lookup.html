@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'core/core.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Item Lookup</h1>
+
+<div class="card-admin">
+  <h2>Welcome to Item Lookup</h2>
+  <p>Use this page to lookup item details, stock levels and locations.</p>
+</div>
+
+{%  endblock %}

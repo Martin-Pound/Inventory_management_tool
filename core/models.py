@@ -42,6 +42,7 @@ class Bin(models.Model):
 
     class Meta:
         verbose_name_plural = "Bins"
+        unique_together = ("bin_name", "warehouse")
 
     def __str__(self):
         return f"{self.bin_name} - {self.warehouse.warehouse_name}"

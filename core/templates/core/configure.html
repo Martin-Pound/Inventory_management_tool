@@ -30,9 +30,31 @@
   <form method="post" action="">
     <input type="hidden" name="form_type" value="bin">
     {% csrf_token %}
-    {{ bin_form.as_p }}
+
+    {% if bin_form.non_field_errors %}
+    <div class="error-message">
+      {% for error in bin_form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for field in bin_form %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+        <span class="field-error">
+          {% for error in field.errors %}
+            {{ error }}
+          {% endfor %}
+        </span>
+        {% endif %}
+      </p>
+    {% endfor %}
     <button type="submit">Save Bin Configuration</button>
   </form>
+
 </div>
 
 <div class="card-admin">
