@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Item Lookup{% endblock %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'core/core.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Problem Solve</h1>
+
+ <div class="card-admin">
+  <h2>Welcome to Problem Solve</h2>
+  <p>Use the below tools to update and resolve any stock or item issues.</p>
+</div>
+
+<div class="card-admin">
+  <h2>Search for Item by SKU</h2>
+  <form method="get" action="">
+    <p>
+      <label for="search_sku">Enter SKU:</label>
+      <input type="text" name="search_sku" id="search_sku" value="{{ search_sku|default:'' }}" required>
+    </p>
+    <button type="submit">Search Item</button>
+  </form>
+</div>
+
+{% if messages %}
+<div class="card-admin">
+  {% for message in messages %}
+    <div class="{% if message.tags %}message-{{ message.tags }}{% else %}message{% endif %}">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if item %}
+    <div class="card-admin">
+      <h2>Edit Item: {{ item.item_name }}</h2>
+      <form method="post" action="">
+        <input type="hidden" name="original_sku" value="{{ item.SKU }}">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="error-message">
+          {% for error in form.non_field_errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+        <span class="field-error">
+          {% for error in field.errors %}
+            {{ error }}
+          {% endfor %}
+        </span>
+        {% endif %}
+      </p>
+    {% endfor %}
+    <button type="submit">Update Item</button>
+    <a href="{% url 'problem-solve-page' %}" class="button cancel-button">Cancel</a>
+  </form>
+</div>
+{% endif %}
+
+
+{% endblock %}

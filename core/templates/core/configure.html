@@ -30,7 +30,6 @@
   <form method="post" action="">
     <input type="hidden" name="form_type" value="bin">
     {% csrf_token %}
-
     {% if bin_form.non_field_errors %}
     <div class="error-message">
       {% for error in bin_form.non_field_errors %}

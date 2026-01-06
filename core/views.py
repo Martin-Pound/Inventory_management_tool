@@ -265,3 +265,71 @@ class ItemsLookupView(View):
             context['bin_warehouse_matrix'] = self.get_warehouse_bin_matrix()
 
         return render(request, self.template_name, context)
+
+class ProblemSolveView(View):
+    template_name = "core/problem_solve.html"
+
+    def get(self, request, *args, **kwargs):
+
+        search_sku = request.GET.get("search_sku")
+
+        context = {
+            'search_form': True
+        }
+
+        if search_sku:
+            try:
+                item = Item.objects.get(SKU__iexact=search_sku)
+                form = ItemForm(instance=item)
+                context.update({
+                    'item': item,
+                    'item_form': form,
+                    'search_form': False
+                })
+            except Item.DoesNotExist:
+                context.update({
+                    'error_message': f"No item found with SKU '{search_sku}'"
+                })
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        sku = request.POST.get("sku").strip()
+
+        if not sku:
+            messages.error(request, "SKU is required.")
+            return redirect(reverse("problem-solve-page"))
+        try:
+            item = Item.objects.get(SKU__iexact=sku)
+            form = ItemForm(request.POST, instance=item)
+
+            if form.is_valid():
+                updated_item = form.save()
+                messages.success(request, f"Item '{updated_item.item_name}' (SKU: {updated_item.SKU}) successfully updated.")
+
+                if updated_item != sku:
+                    return redirect(f"{request.path}?search_sku={updated_item.SKU}")
+
+                form = ItemForm(instance=updated_item)
+                return render(request, self.template_name, {
+                    'item': updated_item,
+                    'item_form': form,
+                    'search_form': False
+                })
+            else:
+                # If form validation failed, show the form with errors
+                return render(request, self.template_name, {
+                    'search_form': True,
+                    'item': item,
+                    'form': form,
+                    'search_sku': sku
+                })
+
+        except Item.DoesNotExist:
+            messages.error(request, f"Item with SKU '{sku}' no longer exists.")
+            return redirect('problem_solve')
+
+
+
+
+
