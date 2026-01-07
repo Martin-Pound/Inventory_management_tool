@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Item Lookup{% endblock %}
+{% block title %}Problem Solve{% endblock %}
 
 {% block css_files %}
   <link rel="stylesheet" href="{% static 'core/core.css' %}">
@@ -51,7 +51,7 @@
         </div>
         {% endif %}
 
-    {% for field in form %}
+     {% for field in item_form %}
       <p>
         {{ field.label_tag }}
         {{ field }}
@@ -67,6 +67,55 @@
     <button type="submit">Update Item</button>
     <a href="{% url 'problem-solve-page' %}" class="button cancel-button">Cancel</a>
   </form>
+</div>
+
+<div class="card-admin">
+  <h2>Stock Matrix {% if item %}for {{ item.item_name }}{% endif %}</h2>
+  <div class="table-responsive">
+    <table class="stock-table">
+      <thead>
+        <tr>
+          <th>Bin Name</th>
+          {% for warehouse in bin_warehouse_matrix.warehouses %}
+            <th>{{ warehouse.warehouse_name }}</th>
+          {% endfor %}
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if bin_warehouse_matrix.bins %}
+          {% for bin_row in bin_warehouse_matrix.bins %}
+            <tr>
+              <td><strong>{{ bin_row.bin_name }}</strong></td>
+              {% for quantity in bin_row.quantities %}
+                <td>{{ quantity }}</td>
+              {% endfor %}
+              <td><strong>{{ bin_row.row_total }}</strong></td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="{{ bin_warehouse_matrix.warehouses|length|add:2 }}">
+              {% if item %}
+                No stock found for this item.
+              {% else %}
+                No stock data available.
+              {% endif %}
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          {% for total in bin_warehouse_matrix.column_totals %}
+            <th>{{ total }}</th>
+          {% endfor %}
+          <th>{{ bin_warehouse_matrix.grand_total }}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>
 {% endif %}
 
