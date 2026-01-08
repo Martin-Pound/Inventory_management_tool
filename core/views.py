@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
 from core.forms import WarehouseForm, BinForm, CategoryForm, SupplierForm, ItemForm
-from core.models import Item, Category, Warehouse, Supplier, Bin, StockLevel
+from core.models import Item, Category, Warehouse, Supplier, Bin, StockLevel, MovementType, MovementLog
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.urls import reverse
@@ -80,6 +80,17 @@ def get_warehouse_bin_matrix(item_id=None):
         matrix['bins'].append(bin_row)
 
     return matrix
+
+def get_movement_logs(item_id):
+    """
+    Fetches movement logs for a specific item.
+    """
+    queryset = MovementLog.objects.order_by('-date_moved')
+    if item_id:
+        queryset = queryset.filter(item_id=item_id)
+        print(queryset.query)
+
+    return queryset
 
 # Create your views here.
 class DashboardView(View):
@@ -286,14 +297,20 @@ class ProblemSolveView(View):
                 # Use the shared function
                 bin_warehouse_matrix = get_warehouse_bin_matrix(item_id=item.id)
 
+                movement_logs = get_movement_logs(item_id=item.id)
+
                 context.update({
                     'item': item,
                     'item_form': form,
                     'search_form': False,
-                    'bin_warehouse_matrix': bin_warehouse_matrix
+                    'bin_warehouse_matrix': bin_warehouse_matrix,
+                    'movement_logs': movement_logs,
                 })
             except Item.DoesNotExist:
                 messages.error(request, f"No item found with SKU '{search_sku}'")
+
+        context['bins'] = Bin.objects.all().order_by('bin_name')
+        context['movement_types'] = MovementType.objects.all().order_by('code')
 
         return render(request, self.template_name, context)
 
@@ -306,6 +323,7 @@ class ProblemSolveView(View):
         try:
             item = Item.objects.get(SKU__iexact=sku)
             form = ItemForm(request.POST, instance=item)
+
 
             if form.is_valid():
                 updated_item = form.save()

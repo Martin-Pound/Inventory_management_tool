@@ -5,12 +5,14 @@
 
 {% block css_files %}
   <link rel="stylesheet" href="{% static 'core/core.css' %}">
+  <script src="{% static 'core/js/log_movement.js' %}"></script>
+
 {% endblock %}
 
 {% block content %}
 <h1>Problem Solve</h1>
 
- <div class="card-admin">
+<div class="card-admin">
   <h2>Welcome to Problem Solve</h2>
   <p>Use the below tools to update and resolve any stock or item issues.</p>
 </div>
@@ -117,7 +119,77 @@
     </table>
   </div>
 </div>
+
+<div class="card-admin">
+  <h2>Recent Movement Logs {% if item %}for {{ item.item_name }}{% endif %}</h2>
+  <div class="table-responsive">
+    <table class="stock-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Item</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Quantity</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if movement_logs %}
+          {% for log in movement_logs %}
+            <tr>
+              <td>{{ log.date_moved|date:"d/m/Y H:i" }}</td>
+              <td>{{ log.item.item_name }}</td>
+              <td>{{ log.from_bin.bin_name }}</td>
+              <td>{{ log.to_bin.bin_name }}</td>
+              <td>{{ log.quantity }}</td>
+              <td>{{ log.movement_type.code }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="6">
+              No movement logs found.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endif %}
 
-
+<div class="card-admin">
+  <h2>Log Stock Movement</h2>
+  <div id="movement-messages"></div>
+  <form id="movement-log-form" method="post">
+    {% csrf_token %}
+    <p>
+      <label for="movement_sku">SKU:</label>
+      <input type="text" name="item" id="movement_sku" required>
+    </p>
+    <p>
+      <label for="from_bin">From Bin:</label>
+      <input type="text" name="from_bin" id="from_bin" required>
+    </p>
+    <p>
+      <label for="to_bin">To Bin:</label>
+      <input type="text" name="to_bin" id="to_bin" required>
+    </p>
+    <p>
+      <label for="quantity">Quantity:</label>
+      <input type="number" name="quantity" id="quantity" min="1" required>
+    </p>
+    <p>
+      <label for="movement_type">Movement Type:</label>
+      <select name="movement_type" id="movement_type" required>
+        <option value="">Select Movement Type</option>
+        {% for type in movement_types %}
+          <option value="{{ type.code }}">{{ type.code }} - {{ type.name }}</option>
+        {% endfor %}
+      </select>
+    </p>
+    <button type="submit">Log Movement</button>
+  </form>
+</div>
 {% endblock %}
