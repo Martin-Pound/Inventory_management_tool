@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -43,6 +44,22 @@ class Bin(models.Model):
     class Meta:
         verbose_name_plural = "Bins"
         unique_together = ("bin_name", "warehouse")
+
+    def clean(self):
+        # Get warehouse name
+        warehouse_name = self.warehouse.warehouse_name
+
+        # Check if bin name starts with the warehouse name prefix
+        expected_prefix = f"{warehouse_name}-"
+        if not self.bin_name.startswith(expected_prefix):
+            raise ValidationError(f"Bin name must start with '{expected_prefix}' for warehouse {warehouse_name}")
+
+    def save(self,
+            *args,
+            **kwargs):
+        self.clean()
+        return super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f"{self.bin_name} - {self.warehouse.warehouse_name}"

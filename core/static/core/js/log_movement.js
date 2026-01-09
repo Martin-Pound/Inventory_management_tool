@@ -1,4 +1,4 @@
-//log_movement.js - corrected version
+//log_movement.js - corrected version with proper getCookie implementation
 
 document.addEventListener('DOMContentLoaded', function() {
     // Get the form element
@@ -53,7 +53,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Helper functions remain the same
-    function getCookie(name) { /* unchanged */ }
-    function showMessage(type, text) { /* unchanged */ }
+    // Helper function to get cookies - PROPERLY IMPLEMENTED
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Helper function to show messages
+    function showMessage(type, text) {
+        const messageContainer = document.createElement('div');
+        messageContainer.className = `message message-${type}`;
+        messageContainer.textContent = text;
+
+        // Insert the message at the top of the content
+        const contentArea = document.querySelector('.card-admin');
+        if (contentArea && contentArea.parentNode) {
+            contentArea.parentNode.insertBefore(messageContainer, contentArea);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                messageContainer.remove();
+            }, 5000);
+        } else {
+            console.log(`${type.toUpperCase()}: ${text}`);
+        }
+    }
 });
+
