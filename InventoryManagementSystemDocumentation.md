@@ -10,7 +10,7 @@ This is a comprehensive inventory management system built with Django. The syste
 - Bin location tracking
 - Stock level monitoring
 - Movement logging with different movement types
-- API for system integration
+- API's for external system integration
 
 ## Project Structure
 
@@ -53,6 +53,8 @@ Records the movement of items between bin locations, including quantity, timesta
 - Items have many StockLevels
 - MovementLogs track item movements between Bins
 - MovementTypes classify different kinds of movements
+
+![ER Diagram](inventory_manager_ERD.drawio.png)
 
 ## Environment Variables
 
