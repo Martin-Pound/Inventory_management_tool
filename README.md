@@ -101,7 +101,7 @@ For production deployment on AWS:
    ```
    python manage.py migrate
    ```
-6. Seed the database with initial data (TBD):
+6. Seed the database with initial data:
    ```
    python manage.py seed_data
    ```
