@@ -16,7 +16,7 @@ This is a comprehensive inventory management system built with Django. The syste
 
 ### Apps
 - **core**: Main application with all inventory models and business logic
-- **analytics**: Data analysis and reporting functionality (Work in Progress)
+- **analytics**: Data analysis and reporting functionality (WIP)
 - **api**: RESTful API for integration with other systems
 
 ### Core Models
