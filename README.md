@@ -54,7 +54,7 @@ Records the movement of items between bin locations, including quantity, timesta
 - MovementLogs track item movements between Bins
 - MovementTypes classify different kinds of movements
 
-![ER Diagram](inventory_manager_ERD.drawio.png)
+![ERD Diagram](Inventory_manager_ERD.drawio.png)
 
 ## Environment Variables
 
