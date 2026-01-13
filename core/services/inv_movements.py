@@ -91,7 +91,7 @@ def inbound_stock(item, warehouse, quantity):
     #validate warehouse existence
     warehouse = warehouse_check(warehouse)
     #determine receiving bin name
-    receiving_bin_name = f"{warehouse}_INBOUND"
+    receiving_bin_name = f"{warehouse}-RECEIVE"
     # get the bin object
     bin_obj = get_bin(receiving_bin_name)
     # updates stock level

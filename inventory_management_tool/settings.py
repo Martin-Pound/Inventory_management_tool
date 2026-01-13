@@ -81,9 +81,14 @@ WSGI_APPLICATION = 'inventory_management_tool.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'inventory_app_db',  # The database name you created
+        'USER': 'inventory_user',
+        'PASSWORD': 'DBpassword1234$',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
+
 }
 
 

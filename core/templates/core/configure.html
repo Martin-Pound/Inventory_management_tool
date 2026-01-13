@@ -15,6 +15,17 @@
   <p>Use the below forms to configure warehouse and vendor attributes.</p>
 </div>
 
+{% if messages %}
+<div class="card-admin">
+  {% for message in messages %}
+    <div class="{% if message.tags %}message-{{ message.tags }}{% else %}message{% endif %}">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+
 <div class="card-admin">
   <h2>New Warehouse Configuration</h2>
   <form method="post" action="">
