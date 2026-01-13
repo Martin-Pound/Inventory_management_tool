@@ -58,9 +58,9 @@ Records the movement of items between bin locations, including quantity, timesta
 
 ## Environment Variables
 
-This project uses environment variables for configuration, especially for database credentials and sensitive settings. Before deployment, you should set up the following environment variables:
+This project uses environment variables for configuration, especially for database credentials and sensitive settings. Before deployment, you should set up the following environment variables in a `.env` file or your deployment environment:
 
-- DB_ENGINE=django.db.backends.postgresql
+- DB_ENGINE=django.db.backends.postgresql (if using PostgreSQL)
 - DB_NAME=your_db_name
 - DB_USER=your_db_user
 - DB_PASSWORD=your_password 
@@ -69,7 +69,8 @@ This project uses environment variables for configuration, especially for databa
 ## Deployment Instructions
 
 ### Local Development
-For local development, you can create a `.env` file in the project root with these variables.
+For local development ensure you have created a local database updated `.env` file with the necessary environment variables.
+
 **Important**: Never commit `.env` files to version control. Add them to your `.gitignore`. Current database configured to use PostgreSQL.
 
 ### Production Deployment (TBD)
